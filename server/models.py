@@ -8,6 +8,7 @@ class Project(db.Model, SerializerMixin):
     __tablename__ = 'projects'
 
     id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String)
+    name = db.Column(db.String)
     description = db.Column(db.String)
-    
+    location = db.Column(db.String)
+
