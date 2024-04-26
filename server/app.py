@@ -23,6 +23,22 @@ class ProjectIndex(Resource):
       db.session.add(new_project)
       db.session.commit()
 
+      teammate = Teammate.query.filter(
+        Teammate.name == request.get_json().get('teammate')).first()
+      # the following should probably be used if we want to create a new teammate
+      # teammate = Teammate(
+      #   name = request.get_json().get('teammate'),
+      # )
+      # db.session.add(teammate)
+      # db.session.commit()
+
+      new_assignment = Assignment(
+        role = request.get_json().get('role'),
+        teammate = teammate,
+        project = new_project
+      ) 
+      db.session.add(new_assignment)
+      db.session.commit()
       return new_project.to_dict(), 201
 
     except:
@@ -67,9 +83,20 @@ class TeammatesIndex(Resource):
     new_teammate.assignments = assignment 
     return new_teammate.to_dict(), 201
   
+class ShowTeammate(Resource):
+
+  def get(self, id):
+    teammate = Teammate.query.filter(Teammate.id == id).first()
+    return teammate.to_dict(), 200
+  
+  # def patch(self, id):
+
+  
 api.add_resource(ProjectIndex, '/projects')
 api.add_resource(ShowProject, '/projects/<int:id>')
 api.add_resource(TeammatesIndex, '/teammates')
+api.add_resource(ShowTeammate, '/teammates/<int:id>')
+
 
 
 
