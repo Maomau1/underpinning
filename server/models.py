@@ -8,7 +8,10 @@ from config import db, bcrypt
 class Project(db.Model, SerializerMixin):
     __tablename__ = 'projects'
     
-    serialize_rules = ('-assignments.project',)
+    serialize_rules = ('-assignments.project',
+                       '-assignments.project_id',
+                       '-assignments.teammate_id',
+                       )
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
@@ -23,7 +26,13 @@ class Project(db.Model, SerializerMixin):
 class Teammate(db.Model, SerializerMixin):
     __tablename__ = 'teammates'
 
-    serialize_rules = ('-assignments.teammate',)
+    serialize_rules = (
+        '-assignments.teammate',
+        '-assignments.teammate_id',
+        '-assignments.project_id',
+        '-assignments.project.description',
+        '-assignments.project.location'
+        )
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
@@ -36,7 +45,9 @@ class Teammate(db.Model, SerializerMixin):
 class Assignment(db.Model, SerializerMixin):
     __tablename__ = 'assignments'
 
-    serialize_rules = ('-teammate.assignments','-project.assignments',)
+    serialize_rules = (
+        '-teammate.assignments','-project.assignments',
+        )
 
     id = db.Column(db.Integer, primary_key = True)
     role = db.Column( db.String)

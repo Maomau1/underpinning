@@ -50,9 +50,27 @@ class ShowProject(Resource):
     db.session.delete(project)
     db.session.commit()
     return {'message':'deletion successful'}, 204
-    
+  
+class TeammatesIndex(Resource):
+  
+  def get(self):
+    teammates = Teammate.query.all()
+    return [teammate.to_dict() for teammate in teammates],200
+  
+  def post(self):
+    new_teammate = Teammate(
+      name = request.get_json().get('name'),
+    )
+    db.session.add(new_teammate)
+    db.session.commit()
+    assignment = request.get_json().get('role')
+    new_teammate.assignments = assignment 
+    return new_teammate.to_dict(), 201
+  
 api.add_resource(ProjectIndex, '/projects')
 api.add_resource(ShowProject, '/projects/<int:id>')
+api.add_resource(TeammatesIndex, '/teammates')
+
 
 
   
