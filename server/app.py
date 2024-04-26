@@ -23,24 +23,27 @@ class ProjectIndex(Resource):
       db.session.add(new_project)
       db.session.commit()
 
-      teammate = Teammate.query.filter(
-        Teammate.name == request.get_json().get('teammate')).first()
-      # the following should probably be used if we want to create a new teammate
-      # teammate = Teammate(
-      #   name = request.get_json().get('teammate'),
-      # )
-      # db.session.add(teammate)
-      # db.session.commit()
-
-      new_assignment = Assignment(
-        role = request.get_json().get('role'),
-        teammate = teammate,
-        project = new_project
-      ) 
-      db.session.add(new_assignment)
-      db.session.commit()
+      assignments = request.get_json().get('assignments')
+      teammates = request.get_json().get('teammates')
+      for assignment in assignments:
+        teammate = Teammate.query.filter(
+          Teammate.name == teammates[
+            assignments.index(assignment)]).first() #obtain the teammate corresponding to the assignment index
+        new_assignment = Assignment(
+          role = assignment,
+          teammate = teammate,
+          project = new_project
+        ) 
+        db.session.add(new_assignment)
+        db.session.commit()
       return new_project.to_dict(), 201
-
+    
+      # the following should probably be used if we want to create a new teammate
+      #   teammate = Teammate(
+      #     name = request.get_json().get('teammate'),
+      #   )
+      #   db.session.add(teammate)
+      #   db.session.commit()
     except:
       return {'error':'invalid entry'}, 422
     
