@@ -26,7 +26,7 @@ class ProjectIndex(Resource):
       return new_project.to_dict(), 201
 
     except:
-      raise ValueError({'error':'invalid entry'}), 422
+      return {'error':'invalid entry'}, 422
     
 class ShowProject(Resource):
   
@@ -35,12 +35,15 @@ class ShowProject(Resource):
     return project.to_dict(), 200
   
   def patch(self, id):
-    project = Project.query.filter(Project.id == id).first()
-    for attr in request.get_json():
-      setattr(project, attr, request.get_json()[f'{attr}'])
-    db.session.add(project)
-    db.session.commit()
-    return project.to_dict(), 201
+    try:
+      project = Project.query.filter(Project.id == id).first()
+      for attr in request.get_json():
+        setattr(project, attr, request.get_json()[f'{attr}'])
+      db.session.add(project)
+      db.session.commit()
+      return project.to_dict(), 201
+    except:
+      return {'error':'invalid entry'}, 422
 
   def delete(self, id):
     project = Project.query.filter(Project.id == id).first()
