@@ -19,7 +19,7 @@ class Project(db.Model, SerializerMixin):
     location = db.Column(db.String)
 
     assignments = db.relationship("Assignment", back_populates = 'project', cascade= 'all, delete-orphan')
-    teammates = association_proxy("assignments", "teammate")
+    teammates = association_proxy("assignments", "teammate") #,creator = lambda name: Assignment(name = name))
     # teammates = db.relationship("Teammate", secondary = "assignment", back_populates = "projects")
     
 
@@ -37,7 +37,7 @@ class Teammate(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
 
-    assignments = db.relationship("Assignment", back_populates = 'teammate')
+    assignments = db.relationship("Assignment", back_populates = 'teammate', cascade= 'all, delete-orphan')
     projects = association_proxy("assignments", 'teammate')
 
     

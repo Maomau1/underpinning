@@ -54,16 +54,63 @@ class ShowProject(Resource):
     return project.to_dict(), 200
   
   def patch(self, id):
-    try:
-      project = Project.query.filter(Project.id == id).first()
-      for attr in request.get_json():
-        setattr(project, attr, request.get_json()[f'{attr}'])
-      db.session.add(project)
-      db.session.commit()
-      return project.to_dict(), 201
-    except:
-      return {'error':'invalid entry'}, 422
+    
+    project = Project.query.filter(Project.id == id).first()
 
+    if not project:
+      return {'error':'project not found'},404
+    
+    data_to_update = request.get_json()
+    # breakpoint()
+    for attr in data_to_update:
+      # breakpoint()
+      
+      if attr == 'teammates':
+        # attr = data_to_update[attr]
+        # breakpoint()
+        # for i,teammate in enumerate(attr):
+        #   project.teammates[i] = Teammate.query.filter(
+        #     Teammate.name == teammate).first()
+        #   breakpoint()
+        teammates_proxy = project.teammates
+        for i, teammate_name in enumerate(data_to_update[attr]):
+          teammate = Teammate.query.filter(
+            Teammate.name == teammate_name).first()
+          project.teammates[i]= teammate
+        # teammates = []
+        # for teammate_name in data_to_update[attr]:
+        #   teammate = Teammate.query.filter(
+        #     Teammate.name == teammate_name).first()
+        #   if teammate:
+        #     teammates.append(teammate)
+        # setattr(project, attr, teammates)
+
+      elif attr == 'assignments':
+        assignment_data = request.get_json()[attr]
+        for i, assignment_role in enumerate(assignment_data):
+          project.assignments[i].role = assignment_role
+          breakpoint()
+        
+      else:
+        setattr(project, attr, data_to_update[attr])
+      
+      # breakpoint()
+    db.session.commit()
+    # breakpoint()
+    return project.to_dict(), 200
+    
+ # if attr == 'assignments': #assignments array
+        #   breakpoint()
+        #   for assignment in attr:  #each assignment
+        #     breakpoint()
+        #     update_assignment = Assignment.query.filter(   #finds the assignment in the database
+        #       Assignment.id == assignment.id).first()
+        #     for key in assignment:
+        #       setattr(update_assignment, key, assignment[f'{key}'])
+        #     teammates = request.get_json().get('teammates')
+        #     teammate = Teammate.query.filter(
+        #       Teammate.id == teammates[attr.index(assignment)]).first()
+        #     update_assignment.teammate = teammate
   def delete(self, id):
     project = Project.query.filter(Project.id == id).first()
     db.session.delete(project)
