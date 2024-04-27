@@ -38,7 +38,7 @@ class Teammate(db.Model, SerializerMixin):
     name = db.Column(db.String)
 
     assignments = db.relationship("Assignment", back_populates = 'teammate', cascade= 'all, delete-orphan')
-    projects = association_proxy("assignments", 'teammate')
+    projects = association_proxy("assignments", 'project')
 
     
 

@@ -99,18 +99,6 @@ class ShowProject(Resource):
     # breakpoint()
     return project.to_dict(), 200
     
- # if attr == 'assignments': #assignments array
-        #   breakpoint()
-        #   for assignment in attr:  #each assignment
-        #     breakpoint()
-        #     update_assignment = Assignment.query.filter(   #finds the assignment in the database
-        #       Assignment.id == assignment.id).first()
-        #     for key in assignment:
-        #       setattr(update_assignment, key, assignment[f'{key}'])
-        #     teammates = request.get_json().get('teammates')
-        #     teammate = Teammate.query.filter(
-        #       Teammate.id == teammates[attr.index(assignment)]).first()
-        #     update_assignment.teammate = teammate
   def delete(self, id):
     project = Project.query.filter(Project.id == id).first()
     db.session.delete(project)
@@ -129,8 +117,8 @@ class TeammatesIndex(Resource):
     )
     db.session.add(new_teammate)
     db.session.commit()
-    assignment = request.get_json().get('role')
-    new_teammate.assignments = assignment 
+    # assignment = request.get_json().get('role')
+    # new_teammate.assignments = assignment 
     return new_teammate.to_dict(), 201
   
 class ShowTeammate(Resource):
@@ -139,7 +127,16 @@ class ShowTeammate(Resource):
     teammate = Teammate.query.filter(Teammate.id == id).first()
     return teammate.to_dict(), 200
   
-  # def patch(self, id):
+  def delete(self, id):
+    db.session.delete(Teammate.query.filter(Teammate.id == id).first())
+    db.session.commit()
+    return {'message': 'No content'}, 204
+  
+  def patch(self, id):
+    teammate = Teammate.query.filter(Teammate.id == id).first()
+    teammate.name = request.get_json().get('name')
+    db.session.commit()
+    return teammate.to_dict(), 200
 
   
 api.add_resource(ProjectIndex, '/projects')
