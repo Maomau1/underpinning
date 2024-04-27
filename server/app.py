@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, Flask, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 

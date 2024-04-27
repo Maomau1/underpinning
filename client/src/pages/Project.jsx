@@ -11,9 +11,11 @@ function Project() {
     console.log(projectID)
 
     useEffect(()=>{
-        fetch(`http://localhost:3000/projects/${projectID}`)
+        fetch(`api/projects/${projectID}`)
         .then(res=>res.json())
-        .then(data=>setProject(data))
+        .then(data=>{
+          console.log(data)
+          setProject(data)})
         .catch(error=>console.log(error))
     },[projectID])
     
