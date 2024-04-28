@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom'
 
 function Projects() {
   const {projects} = useOutletContext(); 
-  //console.log(projects)
+  console.log(projects)
 
   console.log("Home rendering")
   if (projects==null){

@@ -8,7 +8,7 @@ function ProjectCard({name, id, image}) {
     <article>
       <h2>{name}</h2>
       {/*<img src={image} alt={name}/>*/} 
-      {<Link to={`/project/${id}`}>View Details</Link>}
+      {<Link to={`/projects/${id}`}>View Details</Link>}
     </article>
   )
 }

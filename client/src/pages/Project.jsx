@@ -11,24 +11,17 @@ function Project() {
     console.log(projectID)
 
     useEffect(()=>{
-        fetch(`api/projects/${projectID}`)
-        .then(res=>res.json())
-        .then(data=>{
+        fetch(`/api/projects/${projectID}`)
+        .then((res)=> res.json())
+        .then((data)=>{
           console.log(data)
           setProject(data)})
         .catch(error=>console.log(error))
     },[projectID])
     
-    //const projectToDisplay=project.find(project=>project.id===parseInt(projectID))
-    //console.log(projectToDisplay)
-    // useEffect(()=>{
-    //     setProject(projectToDisplay)
-
-    // },[projectID])
-    //console.log(project.location)
-    if (project=={}){
-        return <h1>Loading...</h1>
-    }
+  if (project == {}){ //project=={}
+      return <h1>Loading...</h1>
+  }
   return (
     <div>
       <header>
@@ -45,3 +38,12 @@ function Project() {
 }
 
 export default Project
+
+
+ //const projectToDisplay=project.find(project=>project.id===parseInt(projectID))
+    //console.log(projectToDisplay)
+    // useEffect(()=>{
+    //     setProject(projectToDisplay)
+
+    // },[projectID])
+    //console.log(project.location)

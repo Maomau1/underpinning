@@ -50,8 +50,11 @@ class ProjectIndex(Resource):
 class ShowProject(Resource):
   
   def get(self, id):
-    project = Project.query.filter(Project.id == id).first()
-    return project.to_dict(), 200
+    try:
+      project = Project.query.filter(Project.id == id).first()
+      return project.to_dict(), 200
+    except ValueError as err:
+      return {'error message':f'{err}'}
   
   def patch(self, id):
     
@@ -89,7 +92,7 @@ class ShowProject(Resource):
         assignment_data = request.get_json()[attr]
         for i, assignment_role in enumerate(assignment_data):
           project.assignments[i].role = assignment_role
-          breakpoint()
+          # breakpoint()
         
       else:
         setattr(project, attr, data_to_update[attr])

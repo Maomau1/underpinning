@@ -25,7 +25,7 @@ const routes= [
                 //errorElement:<ErrorPage/>
             },
             {
-                path:"/project/:id",
+                path:"/projects/:id",
                 element:<Project/>,
                 //errorElement:<ErrorPage/>
             },

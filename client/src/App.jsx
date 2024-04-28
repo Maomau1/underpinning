@@ -7,7 +7,7 @@ function App() {
   const [projects, setProjects]=useState([])
 
     useEffect(()=>{
-      fetch('api/projects')
+      fetch('/api/projects')
       .then(res=>res.json())
       .then(data=>setProjects(data))
       .catch(error=>console.log(error))
