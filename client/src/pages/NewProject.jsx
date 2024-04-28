@@ -12,13 +12,15 @@ function NewProject() {
     const formSchema = yup.object().shape({
         name: yup.string().required("must enter project name").max(15),
         location: yup.string().required(),
-        description: yup.string().min(50).max(250).required("description is required")
+        description: yup.string().min(20).max(250).required("description is required")
     });
     const formik = useFormik({
         initialValues: {
             name: "",
             location: "",
             description: "",
+            teammates: [],
+            assignments: []
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
@@ -44,6 +46,7 @@ function NewProject() {
                 });
         },
         })
+        console.log(formik.values.location)
         
     return (
             <>
@@ -59,7 +62,8 @@ function NewProject() {
             name="name" 
             value={formik.values.name} 
             placeholder='Project Name' 
-            onChange={formik.handleChange}/>
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}/>
             <p style = {{color: "red"}}> {formik.errors.email}</p>
             <br/>
 
@@ -68,7 +72,8 @@ function NewProject() {
             name="location" 
             value={formik.values.location} 
             id="location" 
-            onChange={formik.handleChange}>Project Location
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}>Project Location
                 <option value="New York">New York, NY</option>
                 <option value="Brooklyn">Brooklyn, NY</option>
                 <option value="Queens">Queens, NY</option>
@@ -77,18 +82,82 @@ function NewProject() {
                 <option value="Long Island">Long Island, NY</option>
                 <option value="New Jersey">New Jersey</option>
             </select>
-            <p style = {{color: "red"}}> {formik.errors.location}</p>
+            <p style = {{color: "red"}}> {formik.touched.location && formik.errors.location}</p>
             <br/>
 
+            <label htmlFor= "project-team"> Project Team</label> 
+            <br/>
+            <select 
+            name = "teammates[0]"
+            value = {formik.values.teammates[0]}
+            id = "teammates[0]"
+            onChange={formik.handleChange}>teammates
+                <option value = "">Select Member</option>
+                <option value = "Maurice">Maurice</option>
+                <option value = "Mickey">Mickey</option>
+            </select> 
+            <span/>
+            <select
+            name = "assigments[0]"
+            value = {formik.values.assignments[0]}
+            onChange={formik.handleChange}>
+                <option value = "">Select Role</option>
+                <option value = "QS"> Quality staff</option>
+                <option value = "Engineer">Engineer</option>
+            </select>
+            <br/>
+            <select 
+            name = "teammates[1]"
+            value = {formik.values.teammates[1]}
+            id = "teammates[1]"
+            onChange={formik.handleChange}>teammates
+                <option value = "">Select Member</option>
+                <option value = "Maurice">Maurice</option>
+                <option value = "Mickey">Mickey</option>
+            </select>
+            <span/>
+            <select
+            name = "assigments[1]"
+            value = {formik.values.assignments[1]}
+            onChange={formik.handleChange}>
+                <option value = "">Select Role</option>
+                <option value = "QS"> Quality staff</option>
+                <option value = "Engineer">Engineer</option>
+            </select>
+            <br/>
+            <select 
+            name = "teammates[2]"
+            value = {formik.values.teammates[2]}
+            id = "teammates[2]"
+            onChange={formik.handleChange}>teammates
+                <option value = "">Select Member</option>
+                <option value = "Maurice">Maurice</option>
+                <option value = "Mickey">Mickey</option>
+            </select>
+            <span/>
+            <select
+            name = "assigments[2]"
+            value = {formik.values.assignments[2]}
+            onChange={formik.handleChange}>
+                <option value = "">Select Role</option>
+                <option value = "QS"> Quality staff</option>
+                <option value = "Engineer">Engineer</option>
+            </select>
+                       
+            <br/>
+            <br/>
+            
             <label 
             htmlFor="project-description">Project Description</label>
+            <br/>
             <textarea 
             type="text" 
             name='description' 
             value={formik.values.description} 
             placeholder='Project description' 
-            onChange={formik.handleChange}></textarea>
-            <p style = {{color: "red"}}> {formik.errors.description}</p>
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}></textarea>
+            <p style = {{color: "red"}}> {formik.touched.description && formik.errors.description}</p>
             <br/>
             <button type="submit">Add Project</button>
         </form>
