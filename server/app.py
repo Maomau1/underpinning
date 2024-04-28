@@ -23,19 +23,19 @@ class ProjectIndex(Resource):
       db.session.add(new_project)
       db.session.commit()
 
-      # assignments = request.get_json().get('assignments')
-      # teammates = request.get_json().get('teammates')
-      # for assignment in assignments:
-      #   teammate = Teammate.query.filter(
-      #     Teammate.name == teammates[
-      #       assignments.index(assignment)]).first() #obtain the teammate corresponding to the assignment index
-      #   new_assignment = Assignment(
-      #     role = assignment,
-      #     teammate = teammate,
-      #     project = new_project
-      #   ) 
-      #   db.session.add(new_assignment)
-      #   db.session.commit()
+      assignments = request.get_json().get('assignments')
+      teammates = request.get_json().get('teammates')
+      for assignment in assignments:
+        teammate = Teammate.query.filter(
+          Teammate.name == teammates[
+            assignments.index(assignment)]).first() #obtain the teammate corresponding to the assignment index
+        new_assignment = Assignment(
+          role = assignment,
+          teammate = teammate,
+          project = new_project
+        ) 
+        db.session.add(new_assignment)
+        db.session.commit()
       return new_project.to_dict(), 201
     
       # the following should probably be used if we want to create a new teammate

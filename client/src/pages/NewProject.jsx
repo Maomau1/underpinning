@@ -30,7 +30,8 @@ function NewProject() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(values, null, 2),})
+                body: JSON.stringify(values, null, 2),}
+                )
                 .then ((res) => {
                     if (res.status == 201) {
                         console.log(res.status, res)
@@ -46,7 +47,7 @@ function NewProject() {
                 });
         },
         })
-        console.log(formik.values.location)
+        console.log(formik.values.teammates, formik.values.assignments)
         
     return (
             <>
@@ -98,7 +99,7 @@ function NewProject() {
             </select> 
             <span/>
             <select
-            name = "assigments[0]"
+            name = "assignments[0]"
             value = {formik.values.assignments[0]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
@@ -117,7 +118,7 @@ function NewProject() {
             </select>
             <span/>
             <select
-            name = "assigments[1]"
+            name = "assignments[1]"
             value = {formik.values.assignments[1]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
@@ -136,7 +137,7 @@ function NewProject() {
             </select>
             <span/>
             <select
-            name = "assigments[2]"
+            name = "assignments[2]"
             value = {formik.values.assignments[2]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
