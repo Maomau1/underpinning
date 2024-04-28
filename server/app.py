@@ -23,19 +23,19 @@ class ProjectIndex(Resource):
       db.session.add(new_project)
       db.session.commit()
 
-      assignments = request.get_json().get('assignments')
-      teammates = request.get_json().get('teammates')
-      for assignment in assignments:
-        teammate = Teammate.query.filter(
-          Teammate.name == teammates[
-            assignments.index(assignment)]).first() #obtain the teammate corresponding to the assignment index
-        new_assignment = Assignment(
-          role = assignment,
-          teammate = teammate,
-          project = new_project
-        ) 
-        db.session.add(new_assignment)
-        db.session.commit()
+      # assignments = request.get_json().get('assignments')
+      # teammates = request.get_json().get('teammates')
+      # for assignment in assignments:
+      #   teammate = Teammate.query.filter(
+      #     Teammate.name == teammates[
+      #       assignments.index(assignment)]).first() #obtain the teammate corresponding to the assignment index
+      #   new_assignment = Assignment(
+      #     role = assignment,
+      #     teammate = teammate,
+      #     project = new_project
+      #   ) 
+      #   db.session.add(new_assignment)
+      #   db.session.commit()
       return new_project.to_dict(), 201
     
       # the following should probably be used if we want to create a new teammate
@@ -45,7 +45,7 @@ class ProjectIndex(Resource):
       #   db.session.add(teammate)
       #   db.session.commit()
     except:
-      return {'error':'invalid entry'}, 422
+      return {'error':'invalid post'}, 422
     
 class ShowProject(Resource):
   
@@ -143,7 +143,7 @@ class ShowTeammate(Resource):
 
   
 api.add_resource(ProjectIndex, '/projects')
-api.add_resource(ShowProject, '/projects/<int:id>')
+api.add_resource(ShowProject, '/projects/<int:id>', endpoint = "ShowProject")
 api.add_resource(TeammatesIndex, '/teammates')
 api.add_resource(ShowTeammate, '/teammates/<int:id>')
 
@@ -151,10 +151,6 @@ api.add_resource(ShowTeammate, '/teammates/<int:id>')
 
 
   
-
-
-
-
 
 if __name__ == "__main__":
   app.run(port=5555, debug=True)
