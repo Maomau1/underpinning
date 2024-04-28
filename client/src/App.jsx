@@ -19,13 +19,20 @@ function App() {
     console.log(e.target.value)
     navigate(`${e.target.value}`)
   }
+  function handleDeleteProject(deletedProject) {
+    const updatedProjects = projects.filter((project)=> project.id !== deletedProject.id);
+    setProjects(updatedProjects);
+  }
   function handleNewProject(projectAdded){
     console.log(projectAdded)
     // const newProject = {...projectAdded,description:"Hello Nancy"}
    setProjects([...projects,projectAdded])
   }
   return (<>
-  <Outlet context={{projects:projects, handleNewProject:handleNewProject}}/>
+  <Outlet context={{
+    projects:projects, 
+    handleNewProject:handleNewProject, 
+    handleDeleteProject:handleDeleteProject}}/>
   </>
   );
 }
