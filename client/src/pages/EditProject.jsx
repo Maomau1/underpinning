@@ -4,7 +4,7 @@ import * as yup from "yup";
 import NavBar from '../components/NavBar'
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
-function EditProject({project, handleUpdateProject}) {
+function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProject}) {
     const navigate=useNavigate();
     // const {handleUpdateProject, projects}=useOutletContext()
 
@@ -30,7 +30,7 @@ function EditProject({project, handleUpdateProject}) {
         validationSchema: formSchema,
         onSubmit: (values) => {
             console.log(values)
-            fetch("/api/projects", {
+            fetch(`/api/projects/${project.id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,11 +45,16 @@ function EditProject({project, handleUpdateProject}) {
                 .then ((data) => {
                     console.log(data)
                     handleUpdateProject(data)
-                    navigate(`../projects/${data.id}`)
+                    setIsEdit(!isEdit)
+                    setProject(data)
+                    
+                    // navigate(`../projects/${data.id}`)
                     })
                 .catch((error) => {
                     console.error("Error:", error)
                 });
+                
+                
         },
         })
         console.log(formik.values.teammates, formik.values.assignments)
@@ -101,6 +106,7 @@ function EditProject({project, handleUpdateProject}) {
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option>
             </select> 
             <span/>
             <select
@@ -108,8 +114,10 @@ function EditProject({project, handleUpdateProject}) {
             value = {formik.values.assignments[0]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
             <br/>
             <select 
@@ -120,6 +128,7 @@ function EditProject({project, handleUpdateProject}) {
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option>
             </select>
             <span/>
             <select
@@ -127,8 +136,10 @@ function EditProject({project, handleUpdateProject}) {
             value = {formik.values.assignments[1]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
             <br/>
             <select 
@@ -139,15 +150,17 @@ function EditProject({project, handleUpdateProject}) {
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option>
             </select>
             <span/>
             <select
             name = "assignments[2]"
             value = {formik.values.assignments[2]}
             onChange={formik.handleChange}>
-                <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
                        
             <br/>

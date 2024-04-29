@@ -67,7 +67,12 @@ function Project() {
 
   if(isEdit)
   {
-    return <EditProject project = {project} handleUpdateProject={handleUpdateProject}/>
+    return <EditProject 
+    project = {project}
+    setProject={setProject} 
+    handleUpdateProject={handleUpdateProject}
+    setIsEdit={setIsEdit}
+    isEdit={isEdit}/>
   }
   // console.log(project.assignments)
   const assignments = project.assignments
