@@ -19,8 +19,20 @@ function App() {
     console.log(e.target.value)
     navigate(`${e.target.value}`)
   }
+
   function handleDeleteProject(deletedProject) {
     const updatedProjects = projects.filter((project)=> project.id !== deletedProject.id);
+    setProjects(updatedProjects);
+  }
+
+  function handleUpdateProject(updateProject) {
+    const updatedProjects = projects.map((project)=>{
+      if (project.id == updateProject){ 
+        return updateProject}
+      else{
+        return project
+      }
+    })
     setProjects(updatedProjects);
   }
   function handleNewProject(projectAdded){
@@ -31,8 +43,9 @@ function App() {
   return (<>
   <Outlet context={{
     projects:projects, 
-    handleNewProject:handleNewProject, 
-    handleDeleteProject:handleDeleteProject}}/>
+    handleNewProject: handleNewProject, 
+    handleDeleteProject: handleDeleteProject,
+    handleUpdateProject: handleUpdateProject}}/>
   </>
   );
 }
