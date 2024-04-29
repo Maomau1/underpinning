@@ -6,14 +6,13 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 
 function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProject}) {
     const navigate=useNavigate();
-    // const {handleUpdateProject, projects}=useOutletContext()
 
     const formSchema = yup.object().shape({
         name: yup.string().required("must enter project name").max(15),
         location: yup.string().required(),
         description: yup.string().min(20).max(250).required("description is required")
     });
-    const formik = useFormik({
+    const formikEdit = useFormik({
         initialValues: {
             name: project.name,
             location: project.location,
@@ -57,34 +56,34 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
                 
         },
         })
-        console.log(formik.values.teammates, formik.values.assignments)
+        console.log(formikEdit.values.teammates, formikEdit.values.assignments)
         
     return (
             <>
             <header>
                 <NavBar/>
             </header>
-            <form onSubmit={formik.handleSubmit} style = {{margin: "30px"}}>
+            <form onSubmit={formikEdit.handleSubmit} style = {{margin: "30px"}}>
             <h2>Edit Project: {project.name}</h2>
 
             <label htmlFor="project-name ">Project Name</label>
             <input 
             type="text" 
             name="name" 
-            value={formik.values.name} 
+            value={formikEdit.values.name} 
             placeholder='Project Name' 
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}/>
-            <p style = {{color: "red"}}> {formik.errors.email}</p>
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}/>
+            <p style = {{color: "red"}}> {formikEdit.errors.email}</p>
             <br/>
 
             <label htmlFor='project-location '>Project Location</label>
             <select 
             name="location" 
-            value={formik.values.location} 
+            value={formikEdit.values.location} 
             id="location" 
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}>Project Location
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}>Project Location
                 <option value="New York">New York, NY</option>
                 <option value="Brooklyn">Brooklyn, NY</option>
                 <option value="Queens">Queens, NY</option>
@@ -93,16 +92,16 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
                 <option value="Long Island">Long Island, NY</option>
                 <option value="New Jersey">New Jersey</option>
             </select>
-            <p style = {{color: "red"}}> {formik.touched.location && formik.errors.location}</p>
+            <p style = {{color: "red"}}> {formikEdit.touched.location && formikEdit.errors.location}</p>
             <br/>
 
             <label htmlFor= "project-team"> Project Team</label> 
             <br/>
             <select 
             name = "teammates[0]"
-            value = {formik.values.teammates[0]}
+            value = {formikEdit.values.teammates[0]}
             id = "teammates[0]"
-            onChange={formik.handleChange}>teammates
+            onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
@@ -111,8 +110,8 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <span/>
             <select
             name = "assignments[0]"
-            value = {formik.values.assignments[0]}
-            onChange={formik.handleChange}>
+            value = {formikEdit.values.assignments[0]}
+            onChange={formikEdit.handleChange}>
                 <option value = "">Select Role</option>
                 <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
@@ -122,9 +121,9 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <br/>
             <select 
             name = "teammates[1]"
-            value = {formik.values.teammates[1]}
+            value = {formikEdit.values.teammates[1]}
             id = "teammates[1]"
-            onChange={formik.handleChange}>teammates
+            onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
@@ -133,8 +132,8 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <span/>
             <select
             name = "assignments[1]"
-            value = {formik.values.assignments[1]}
-            onChange={formik.handleChange}>
+            value = {formikEdit.values.assignments[1]}
+            onChange={formikEdit.handleChange}>
                 <option value = "">Select Role</option>
                 <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
@@ -144,9 +143,9 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <br/>
             <select 
             name = "teammates[2]"
-            value = {formik.values.teammates[2]}
+            value = {formikEdit.values.teammates[2]}
             id = "teammates[2]"
-            onChange={formik.handleChange}>teammates
+            onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
                 <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
@@ -155,8 +154,8 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <span/>
             <select
             name = "assignments[2]"
-            value = {formik.values.assignments[2]}
-            onChange={formik.handleChange}>
+            value = {formikEdit.values.assignments[2]}
+            onChange={formikEdit.handleChange}>
                 <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
                 <option value = "Operation">Operations</option>
@@ -172,11 +171,11 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             <textarea 
             type="text" 
             name='description' 
-            value={formik.values.description} 
+            value={formikEdit.values.description} 
             placeholder='Project description' 
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}></textarea>
-            <p style = {{color: "red"}}> {formik.touched.description && formik.errors.description}</p>
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}></textarea>
+            <p style = {{color: "red"}}> {formikEdit.touched.description && formikEdit.errors.description}</p>
             <br/>
             <button type="submit">Add Project</button>
         </form>

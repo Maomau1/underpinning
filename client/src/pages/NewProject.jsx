@@ -10,8 +10,8 @@ function NewProject() {
     const {handleNewProject}=useOutletContext()
 
     const formSchema = yup.object().shape({
-        name: yup.string().required("must enter project name").max(15),
-        location: yup.string().required(),
+        name: yup.string().required("must enter project name").max(25).min(5),
+        location: yup.string().required().min(2).max(20),
         description: yup.string().min(20).max(250).required("description is required")
     });
     const formik = useFormik({
@@ -24,7 +24,7 @@ function NewProject() {
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-            console.log(values)
+            console.log('form submitted',values)
             fetch("/api/projects", {
                 method: "POST",
                 headers: {
