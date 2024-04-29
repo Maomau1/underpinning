@@ -17,7 +17,11 @@ function NavBar() {
         <NavLink
         to="/newproject">
             New Project
-        </NavLink>    
+        </NavLink>  
+        <NavLink
+        to="/teammates">
+          Teammates
+        </NavLink>  
         <NavLink
         to = "/about">
           About

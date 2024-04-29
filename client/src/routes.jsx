@@ -7,6 +7,7 @@ import App from './App';
 import NewProject from './pages/NewProject';
 import Home from './pages/Home';
 import Teammates from './pages/Teammates';
+import TeammateId from './pages/TeammateId';
 
 const routes= [
     {
@@ -43,6 +44,10 @@ const routes= [
             {
                 path:"/teammates",
                 element:<Teammates/>,
+            },
+            {
+                path:"teammates/:id",
+                element:<TeammateId/>,
             }
         ]
     }

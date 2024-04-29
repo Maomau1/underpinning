@@ -1,9 +1,11 @@
 import React from 'react'
 
 function TeammateCard({teammate}) {
-    const projectsDisplay = teammate.projects.map((project)=>{
+    console.log(teammate)
+    console.log(teammate.assignments)
+    const projectsDisplay = teammate.assignments.map((assignment)=>{
         return (
-            <li key={project.id}>{project.name}</li>
+            <li key={assignment.id}>{assignment.project.name} role: {assignment.role}</li>
         )
     })
   return (
