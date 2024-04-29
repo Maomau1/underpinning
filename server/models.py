@@ -8,15 +8,26 @@ from config import db, bcrypt
 class Project(db.Model, SerializerMixin):
     __tablename__ = 'projects'
     
+    
     serialize_rules = ('-assignments.project',
                        '-assignments.project_id',
                        '-assignments.teammate_id',
                        )
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String)
-    description = db.Column(db.String)
-    location = db.Column(db.String)
+    name = db.Column(
+        db.String, 
+        unique=True, nullable=False
+        
+    )
+    description = db.Column(
+        db.String,
+        nullable=False
+    )
+    location = db.Column(
+        db.String, 
+        nullable=False
+    )
 
     assignments = db.relationship("Assignment", back_populates = 'project', cascade= 'all, delete-orphan')
     teammates = association_proxy("assignments", "teammate") #,creator = lambda name: Assignment(name = name))

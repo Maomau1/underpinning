@@ -6,6 +6,7 @@ import About from './pages/About';
 import App from './App';
 import NewProject from './pages/NewProject';
 import Home from './pages/Home';
+import Teammates from './pages/Teammates';
 
 const routes= [
     {
@@ -38,6 +39,10 @@ const routes= [
                 path:"/newproject",
                 element:<NewProject/>,
                 //errorElement:<ErrorPage/>
+            },
+            {
+                path:"/teammates",
+                element:<Teammates/>,
             }
         ]
     }
