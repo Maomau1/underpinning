@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import NavBar from '../components/NavBar'
-import { useOutletContext, useNavigate, useFetcher } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
 function NewProject() {
     const [refreshPage, setRefreshPage] = useState(false);
@@ -47,7 +47,7 @@ function NewProject() {
                 });
         },
         })
-        console.log(formik.values.teammates, formik.values.assignments)
+        // console.log(formik.values.teammates, formik.values.assignments)
         
     return (
             <>
@@ -65,7 +65,7 @@ function NewProject() {
             placeholder='Project Name' 
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}/>
-            <p style = {{color: "red"}}> {formik.errors.email}</p>
+            <p style = {{color: "red"}}> {formik.touched.name && formik.errors.email}</p>
             <br/>
 
             <label htmlFor='project-location '>Project Location</label>

@@ -24,6 +24,7 @@ function TeammateId() {
     // const teammateProjectsDisplay = teammate.projects.map((project) =>{
     //     return <li key={project.id}>{project.name}</li>
     // })
+    
 
   return (
     <div>
@@ -35,6 +36,7 @@ function TeammateId() {
         <h2>Name: {teammate.name}</h2>
         <ul>{teammateProjectsDisplay}</ul> */}
         <TeammateCard teammate={teammate}/>
+        
       </main>
     </div>
   )
