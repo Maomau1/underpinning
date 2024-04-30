@@ -21,11 +21,16 @@ function NavBar() {
         <NavLink
         to="/teammates">
           Teammates
-        </NavLink>  
+        </NavLink> 
+        <NavLink
+        to="/assignments">
+          Assignments
+        </NavLink> 
         <NavLink
         to = "/about">
           About
         </NavLink>
+        
     </div>
   )
 }

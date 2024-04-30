@@ -141,11 +141,18 @@ class ShowTeammate(Resource):
     db.session.commit()
     return teammate.to_dict(), 200
 
+class AssignmentIndex(Resource):
+  
+  def get(self):
+    assignments = Assignment.query.all()
+    return [assignment.to_dict() for assignment in assignments], 200
+
   
 api.add_resource(ProjectIndex, '/projects')
 api.add_resource(ShowProject, '/projects/<int:id>', endpoint = "ShowProject")
 api.add_resource(TeammatesIndex, '/teammates')
 api.add_resource(ShowTeammate, '/teammates/<int:id>')
+api.add_resource(AssignmentIndex, '/assignments')
 
 
 
