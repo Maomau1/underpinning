@@ -147,6 +147,17 @@ class AssignmentIndex(Resource):
     assignments = Assignment.query.all()
     return [assignment.to_dict() for assignment in assignments], 200
 
+  def post(self):
+    new_assignment= Assignment(role = request.get_json().get('role'))
+    db.session.add(new_assignment)
+    db.session.commit()
+    project = request.get_json().get('project')
+    teammate = request.get_json().get('teammate')
+    new_assignment.project = Project.query.filter(Project.name==project)
+    new_assignment.teammate = Teammate.query.filter(Teammate.name == teammate)
+
+    return new_assignment.to_dict(), 201
+
   
 api.add_resource(ProjectIndex, '/projects')
 api.add_resource(ShowProject, '/projects/<int:id>', endpoint = "ShowProject")
