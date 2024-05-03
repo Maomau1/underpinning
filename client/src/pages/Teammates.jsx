@@ -97,7 +97,7 @@ function Teammates() {
             value={teammateFormik.values.name}
             onChange={teammateFormik.handleChange}
             onBlur={teammateFormik.handleBlur} />
-            <p style = {{color: "red"}}> {teammateFormik.touched.name && teammateFormik.errors.email}</p>
+            <p style = {{color: "red"}}> {teammateFormik.touched.name && teammateFormik.errors.name}</p>
             <br/>
             <button type='submit'>add teammate</button>
         </form>

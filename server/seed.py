@@ -38,32 +38,32 @@ if __name__ == "__main__":
 
     # Assignments
     a1 = Assignment(
-      role = 'lead estimator',
+      role = 'Estimator',
       teammate = t3,
       project = p2,
     )
     a2 = Assignment(
-      role = 'project engineer',
+      role = 'Engineer',
       teammate = t1,
       project = p2 
     )
     a3 = Assignment(
-      role = 'field engineer',
+      role = 'Estimator',
       teammate = t2,
       project = p2 
     )
     a4 = Assignment(
-      role = 'field engineer',
+      role = 'Operation',
       teammate = t2,
       project = p1,
     )
     a5 = Assignment(
-      role = 'project engineer',
+      role = 'Engineer',
       teammate = t1,
       project = p1 
     )
     a6 = Assignment(
-      role = 'field engineer',
+      role = 'Operation',
       teammate = t1,
       project = p1 
     )

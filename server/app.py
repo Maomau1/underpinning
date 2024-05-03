@@ -1,7 +1,6 @@
 from flask import request, session, Flask, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-
 from config import app, db, api
 from models import Project, Teammate, Assignment
 
@@ -19,7 +18,6 @@ class ProjectIndex(Resource):
         description = request.get_json().get('description'),
         location = request.get_json().get('location')
       )
-      # add assignment input
       db.session.add(new_project)
       db.session.commit()
 
@@ -38,12 +36,6 @@ class ProjectIndex(Resource):
         db.session.commit()
       return new_project.to_dict(), 201
     
-      # the following should probably be used if we want to create a new teammate
-      #   teammate = Teammate(
-      #     name = request.get_json().get('teammate'),
-      #   )
-      #   db.session.add(teammate)
-      #   db.session.commit()
     except:
       return {'error':'invalid post'}, 422
     
@@ -69,30 +61,22 @@ class ShowProject(Resource):
       # breakpoint()
       
       if attr == 'teammates':
-        # attr = data_to_update[attr]
-        # breakpoint()
-        # for i,teammate in enumerate(attr):
-        #   project.teammates[i] = Teammate.query.filter(
-        #     Teammate.name == teammate).first()
-        #   breakpoint()
-        teammates_proxy = project.teammates
+        update_teammates=[]
         for i, teammate_name in enumerate(data_to_update[attr]):
           teammate = Teammate.query.filter(
             Teammate.name == teammate_name).first()
-          project.teammates[i]= teammate
-        # teammates = []
-        # for teammate_name in data_to_update[attr]:
-        #   teammate = Teammate.query.filter(
-        #     Teammate.name == teammate_name).first()
-        #   if teammate:
-        #     teammates.append(teammate)
-        # setattr(project, attr, teammates)
-
+          update_teammates.append[{"index":i, "teammate":teammate}]
+          # project.teammates[i]= teammate
+        
       elif attr == 'assignments':
         assignment_data = request.get_json()[attr]
         for i, assignment_role in enumerate(assignment_data):
-          project.assignments[i].role = assignment_role
-          # breakpoint()
+          assignment = Assignment.query.filter(Assignment.role == assignment_role).first()
+          if assignment:
+            assignment.role = assignment_data
+            # breakpoint()
+            assignment.teammate = update_teammates[i]
+            assignment.project = project
         
       else:
         setattr(project, attr, data_to_update[attr])
@@ -148,15 +132,25 @@ class AssignmentIndex(Resource):
     return [assignment.to_dict() for assignment in assignments], 200
 
   def post(self):
-    new_assignment= Assignment(role = request.get_json().get('role'))
-    db.session.add(new_assignment)
-    db.session.commit()
-    project = request.get_json().get('project')
-    teammate = request.get_json().get('teammate')
-    new_assignment.project = Project.query.filter(Project.name==project)
-    new_assignment.teammate = Teammate.query.filter(Teammate.name == teammate)
-
-    return new_assignment.to_dict(), 201
+    try:
+      
+      project = request.get_json().get('project')
+      teammate = request.get_json().get('teammate')
+      breakpoint()
+      new_assignment_project = Project.query.filter(Project.name == project).first()
+      new_assignment_teammate = Teammate.query.filter(Teammate.name == teammate).first()
+      new_assignment= Assignment(
+        role = request.get_json().get('role'),
+        project = new_assignment_project,
+        teammate = new_assignment_teammate
+        )
+      # breakpoint()  
+      db.session.add(new_assignment)
+      db.session.commit()
+      
+      return new_assignment.to_dict(), 201
+    except AttributeError as err:
+      return {'message':f'something is wrong{err}'},422
 
   
 api.add_resource(ProjectIndex, '/projects')
@@ -172,3 +166,20 @@ api.add_resource(AssignmentIndex, '/assignments')
 
 if __name__ == "__main__":
   app.run(port=5555, debug=True)
+
+
+
+     # attr = data_to_update[attr]
+        # breakpoint()
+        # for i,teammate in enumerate(attr):
+        #   project.teammates[i] = Teammate.query.filter(
+        #     Teammate.name == teammate).first()
+        #   breakpoint()
+
+  # teammates = []
+        # for teammate_name in data_to_update[attr]:
+        #   teammate = Teammate.query.filter(
+        #     Teammate.name == teammate_name).first()
+        #   if teammate:
+        #     teammates.append(teammate)
+        # setattr(project, attr, teammates)

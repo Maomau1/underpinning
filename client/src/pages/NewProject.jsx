@@ -5,14 +5,15 @@ import NavBar from '../components/NavBar'
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
 function NewProject() {
-    const [refreshPage, setRefreshPage] = useState(false);
     const navigate=useNavigate();
-    const {handleNewProject}=useOutletContext()
+    const {handleNewProject, teammates}=useOutletContext()
 
     const formSchema = yup.object().shape({
         name: yup.string().required("must enter project name").max(25).min(5),
         location: yup.string().required().min(2).max(20),
-        description: yup.string().min(20).max(250).required("description is required")
+        description: yup.string().min(20).max(250).required("description is required"),
+        assignments:yup.array().required().min(1),
+        teammates:yup.array().required().min(1)
     });
     const formik = useFormik({
         initialValues: {
@@ -47,6 +48,7 @@ function NewProject() {
                 });
         },
         })
+        console.log('teammates are here', teammates)
         // console.log(formik.values.teammates, formik.values.assignments)
         
     return (
@@ -65,7 +67,7 @@ function NewProject() {
             placeholder='Project Name' 
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}/>
-            <p style = {{color: "red"}}> {formik.touched.name && formik.errors.email}</p>
+            <p style = {{color: "red"}}> {formik.touched.name && formik.errors.name}</p>
             <br/>
 
             <label htmlFor='project-location '>Project Location</label>
@@ -94,8 +96,12 @@ function NewProject() {
             id = "teammates[0]"
             onChange={formik.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
+                {/* <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option> */}
             </select> 
             <span/>
             <select
@@ -103,8 +109,10 @@ function NewProject() {
             value = {formik.values.assignments[0]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
             <br/>
             <select 
@@ -113,8 +121,12 @@ function NewProject() {
             id = "teammates[1]"
             onChange={formik.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
+                {/* <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option> */}
             </select>
             <span/>
             <select
@@ -122,8 +134,10 @@ function NewProject() {
             value = {formik.values.assignments[1]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
             <br/>
             <select 
@@ -132,8 +146,12 @@ function NewProject() {
             id = "teammates[2]"
             onChange={formik.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
+                {/* <option value = "Maurice">Maurice</option>
                 <option value = "Mickey">Mickey</option>
+                <option value = "Ana">Ana</option> */}
             </select>
             <span/>
             <select
@@ -141,11 +159,15 @@ function NewProject() {
             value = {formik.values.assignments[2]}
             onChange={formik.handleChange}>
                 <option value = "">Select Role</option>
-                <option value = "QS"> Quality staff</option>
+                <option value = "Quality staff"> Quality staff</option>
                 <option value = "Engineer">Engineer</option>
+                <option value = "Operation">Operations</option>
+                <option value = "Estimator">Estimator</option>
             </select>
-                       
-            <br/>
+            <span/>
+            <p style = {{color: "red"}}> {formik.touched.assignments  && formik.errors.assignments }</p>
+            <p style = {{color: "red"}}> {formik.touched.teammates  &&formik.errors.teammates}</p>           
+            
             <br/>
             
             <label 

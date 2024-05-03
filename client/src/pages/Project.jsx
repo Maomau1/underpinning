@@ -7,27 +7,27 @@ import EditProject from './EditProject'
 function Project() {
   console.log("Project Display")
   const [project, setProject]=useState({});
-  console.log(project)
+  // console.log(project)
   const params =useParams();
   const projectID=params.id;
-  console.log(projectID)
+  // console.log(projectID)
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate()
-  const {handleDeleteProject, handleUpdateProject} = useOutletContext()
+  const {handleDeleteProject, handleUpdateProject, teammates} = useOutletContext()
   const [isEdit, setIsEdit] = useState(false)
 
   useEffect(()=>{
       fetch(`/api/projects/${projectID}`)
       .then((res)=> res.json())
       .then((data)=>{
-        console.log(data)
+        // console.log(data)
         setProject(data)
         setIsLoaded(true)})
       .catch(error=>console.log(error))
   },[projectID])
 
   function handleDeleteClick() {
-    console.log(project)
+    // console.log(project)
     fetch(`/api/projects/${projectID}`, {
       method: "DELETE",
     })
@@ -72,6 +72,7 @@ function Project() {
     setProject={setProject} 
     handleUpdateProject={handleUpdateProject}
     setIsEdit={setIsEdit}
+    teammates={teammates}
     isEdit={isEdit}/>
   }
   // console.log(project.assignments)

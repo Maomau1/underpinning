@@ -15,7 +15,7 @@ class Project(db.Model, SerializerMixin):
                        'teammates',
                        '-teammates.assignments',
                        '-teammates.projects',
-                       'teammate_names'
+                    #    'teammate_names'
                        )
     
 
@@ -49,7 +49,8 @@ class Teammate(db.Model, SerializerMixin):
         '-assignments.teammate_id',
         '-assignments.project_id',
         '-assignments.project.description',
-        '-assignments.project.location'
+        '-assignments.project.location',
+        '-assignments.project.teammates'
         )
 
     id = db.Column(db.Integer, primary_key = True)
@@ -64,7 +65,10 @@ class Assignment(db.Model, SerializerMixin):
     __tablename__ = 'assignments'
 
     serialize_rules = (
-        '-teammate.assignments','-project.assignments',
+        '-teammate.assignments',
+        '-project.assignments',
+        # '-teammate_id',
+        # '-project_id',
         )
 
     id = db.Column(db.Integer, primary_key = True)

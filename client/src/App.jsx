@@ -5,7 +5,23 @@ import { Outlet, useNavigate} from 'react-router-dom'
 
 function App() {
   const [projects, setProjects]=useState([])
+  const [assignments, setAssignments] = useState([])
+  const [teammates, setTeammates] = useState([])
 
+    useEffect(()=>{
+        Promise.all([
+            fetch('/api/assignments')
+            .then((r)=> r.json()),
+            fetch('/api/teammates')
+            .then((r)=>r.json())])
+            .then(([data1, data2]) => {
+                setAssignments(data1)
+                setTeammates(data2)
+                })
+                .catch((error)=> {
+                    console.error('Error fetching data:', error);
+                });             
+    },[])
     useEffect(()=>{
       fetch('/api/projects')
       .then(res=>res.json())
@@ -13,7 +29,7 @@ function App() {
       .catch(error=>console.log(error))
     },[])
 
-  console.log("App rendering",projects)
+  console.log("App rendering",projects,assignments, teammates)
   const navigate = useNavigate();
   function handleClick(e){
     console.log(e.target.value)
@@ -45,7 +61,11 @@ function App() {
     projects:projects, 
     handleNewProject: handleNewProject, 
     handleDeleteProject: handleDeleteProject,
-    handleUpdateProject: handleUpdateProject}}/>
+    handleUpdateProject: handleUpdateProject,
+    assignments:assignments,
+    teammates:teammates,
+    setAssignments:setAssignments,
+    setTeammates:setTeammates,}}/>
   </>
   );
 }

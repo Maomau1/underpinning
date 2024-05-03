@@ -4,7 +4,7 @@ import * as yup from "yup";
 import NavBar from '../components/NavBar'
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
-function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProject}) {
+function EditProject({project, handleUpdateProject,teammates, setIsEdit, isEdit, setProject}) {
     const navigate=useNavigate();
 
     const formSchema = yup.object().shape({
@@ -12,19 +12,16 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
         location: yup.string().required(),
         description: yup.string().min(20).max(250).required("description is required")
     });
+
+
     const formikEdit = useFormik({
         initialValues: {
             name: project.name,
             location: project.location,
             description: project.description,
-            teammates: [
-                project.assignments[0].teammate.name,
-                project.assignments[1].teammate.name,
-                project.assignments[2].teammate.name],
-            assignments: [
-                project.assignments[0].role,
-                project.assignments[1].role,
-                project.assignments[2].role,]
+            teammates: project.teammates.map((teammate=>teammate.name)),
+            
+            assignments: project.assignments.map((assignment)=>assignment.role),
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
@@ -103,9 +100,9 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             id = "teammates[0]"
             onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
-                <option value = "Mickey">Mickey</option>
-                <option value = "Ana">Ana</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
             </select> 
             <span/>
             <select
@@ -125,9 +122,9 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             id = "teammates[1]"
             onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
-                <option value = "Mickey">Mickey</option>
-                <option value = "Ana">Ana</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
             </select>
             <span/>
             <select
@@ -147,9 +144,9 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
             id = "teammates[2]"
             onChange={formikEdit.handleChange}>teammates
                 <option value = "">Select Member</option>
-                <option value = "Maurice">Maurice</option>
-                <option value = "Mickey">Mickey</option>
-                <option value = "Ana">Ana</option>
+                {teammates.map((teammate)=>(
+                    <option key={teammate.id} value={teammate.name}>{teammate.name}</option>
+                ))}
             </select>
             <span/>
             <select
@@ -184,3 +181,48 @@ function EditProject({project, handleUpdateProject, setIsEdit, isEdit, setProjec
 }
 
 export default EditProject
+
+
+//     const teammates = [] 
+//     for (let i=0; i<project.assignment.length; i++) {
+//         teammates [i]= project.assignment[i].teammate.name
+//         console.log (teammates)
+//     }
+
+//     const assignments = []
+//     for (let i=0; i<project.assignments.length; i++){
+//         assignments[i] = project.assignments[i].role
+//         console.log(assignments)
+//     }
+
+//    for (const [i, element] of teammates.entries())
+//    {
+//     <select 
+//             name = {`teammates[${i}]`}
+//             value = {formikEdit.values.teammates[0]}
+//             id = "teammates[0]"
+//             onChange={formikEdit.handleChange}>teammates
+//                 <option value = "">Select Member</option>
+//                 <option value = "Maurice">Maurice</option>
+//                 <option value = "Mickey">Mickey</option>
+//                 <option value = "Ana">Ana</option>
+//             </select> }
+
+    // if (teammates == []){
+        
+    //     for (let i=0; i<teammates.length; i++) {
+    //         console.log (teammates)
+    //         teammates [i]= teammates[i].name
+    //     }
+    // }
+
+    // const assignments = project.assignments
+    // if (assignments == []){
+    //     assignments = assignments
+    // }
+    // else{
+    //     for (let i=0; i<assignments.length; i++) {
+    //         console.log (assignments)
+    //         assignments [i]= assignments[i].role
+    //     }
+    // }
