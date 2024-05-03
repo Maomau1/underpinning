@@ -60,23 +60,36 @@ class ShowProject(Resource):
     for attr in data_to_update:
       # breakpoint()
       
-      if attr == 'teammates':
+      if attr == 'teammates' or attr=='assignments':
         update_teammates=[]
-        for i, teammate_name in enumerate(data_to_update[attr]):
-          teammate = Teammate.query.filter(
-            Teammate.name == teammate_name).first()
-          update_teammates.append[{"index":i, "teammate":teammate}]
-          # project.teammates[i]= teammate
-        
-      elif attr == 'assignments':
-        assignment_data = request.get_json()[attr]
-        for i, assignment_role in enumerate(assignment_data):
-          assignment = Assignment.query.filter(Assignment.role == assignment_role).first()
-          if assignment:
-            assignment.role = assignment_data
+        for i, teammate_name in enumerate(data_to_update.get('teammates')):
+          if i<len(project.teammates):
+            teammate = Teammate.query.filter(
+              Teammate.name == teammate_name).first()
+            update_teammates.append({"index":i, "teammate":teammate})
+            # project.teammates[i]= teammate
             # breakpoint()
-            assignment.teammate = update_teammates[i]
+        
+        assignment_data = request.get_json().get('assignments')
+        for i, assignment_role in enumerate(assignment_data):
+          if i<len(project.assignments):
+            assignment = project.assignments[i]
+          # if assignment:
+            # breakpoint()
+            assignment.role = assignment_role
+            # breakpoint()
+            assignment.teammate = update_teammates[i]['teammate']
             assignment.project = project
+          else:
+            # breakpoint()
+            assignment = Assignment(
+              role = assignment_role,
+              project = project,
+              teammate = Teammate.query.filter(
+              Teammate.name == teammate_name).first()
+            )
+            db.session.add(assignment)
+          
         
       else:
         setattr(project, attr, data_to_update[attr])
@@ -136,7 +149,7 @@ class AssignmentIndex(Resource):
       
       project = request.get_json().get('project')
       teammate = request.get_json().get('teammate')
-      breakpoint()
+      # breakpoint()
       new_assignment_project = Project.query.filter(Project.name == project).first()
       new_assignment_teammate = Teammate.query.filter(Teammate.name == teammate).first()
       new_assignment= Assignment(
@@ -150,7 +163,7 @@ class AssignmentIndex(Resource):
       
       return new_assignment.to_dict(), 201
     except AttributeError as err:
-      return {'message':f'something is wrong{err}'},422
+      return {'message':f'error:{err}'},422
 
   
 api.add_resource(ProjectIndex, '/projects')

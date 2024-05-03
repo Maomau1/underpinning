@@ -9,36 +9,16 @@ import { useOutletContext, } from 'react-router-dom';
 
 function Assignments() {
 
-    const [assignments, setAssignments] = useState([])
-    const [teammates, setTeammates] = useState([])
+    // const [assignments, setAssignments] = useState([])
+    // const [teammates, setTeammates] = useState([])
     const [isLoaded, setIsLoaded] = useState(false);
 
-    useEffect(()=>{
-        Promise.all([
-            fetch('/api/assignments')
-            .then((r)=> r.json()),
-            fetch('/api/teammates')
-            .then((r)=>r.json())])
-            .then(([data1, data2]) => {
-                setAssignments(data1)
-                setTeammates(data2)
-                setIsLoaded(!isLoaded)
-                })
-                .catch((error)=> {
-                    console.error('Error fetching data:', error);
-                });             
-    },[])
+    const {projects, teammates, assignments, setAssignments, setTeammates} =  useOutletContext()
     console.log('we go the teammates', teammates)
 
-    
-    
     const assignmentFormSchema = yup.object().shape({
         role:yup.string().required().min(2).max(10)
     })
-    
-    const {projects} =  useOutletContext()
-    
-    
 
     const assignmentFormik = useFormik({
         initialValues:{
@@ -102,6 +82,7 @@ function Assignments() {
                  name='teammate'
                  value={assignmentFormik.values.teammate}
                  onChange={assignmentFormik.handleChange}>
+                    <option value="">Select teammate</option>
                     {teammates.map((teammate)=>(
                     <option key={teammate.id} value={teammate.name}>{teammate.name}</option>))}
                  </select>
@@ -119,3 +100,21 @@ function Assignments() {
 }
 
 export default Assignments
+
+
+
+    // useEffect(()=>{
+    //     Promise.all([
+    //         fetch('/api/assignments')
+    //         .then((r)=> r.json()),
+    //         fetch('/api/teammates')
+    //         .then((r)=>r.json())])
+    //         .then(([data1, data2]) => {
+    //             setAssignments(data1)
+    //             setTeammates(data2)
+    //             setIsLoaded(!isLoaded)
+    //             })
+    //             .catch((error)=> {
+    //                 console.error('Error fetching data:', error);
+    //             });             
+    // },[])

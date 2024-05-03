@@ -1,22 +1,23 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import TeammatesList from '../components/TeammatesList'
 import NavBar from '../components/NavBar'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useOutletContext, } from 'react-router-dom';
 
 
 function Teammates() {
-    const [teammates, setTeammates] = useState([])
-    const [newTeammate, setNewTeammate] = useState({})
-
-    useEffect(()=>{
-        fetch('/api/teammates')
-        .then((r)=> r.json())
-        .then((data) => {
-            console.log('teammates data',data)
-            setTeammates(data)
-        })
-    },[])
+    const {teammates, setTeammates} = useOutletContext()
+    const [refreshPage, setRefreshPage] = useState(false)
+    
+    // useEffect(()=>{
+    //     fetch('/api/teammates')
+    //     .then((r)=> r.json())
+    //     .then((data) => {
+    //         console.log('teammates data',data)
+    //         setTeammates(data)
+    //     })
+    // },[])
 
     const formSchema = yup.object().shape({
         name:yup.string().required().min(3).max(15)
@@ -39,7 +40,7 @@ function Teammates() {
                     return r.json()}})
             .then((data)=>{
                 console.log('newteammate', data)
-                setNewTeammate(data)
+                setRefreshPage(!refreshPage)
                 handleAddTeammate(data)
                 teammateFormik.values.name=""}
                 )
